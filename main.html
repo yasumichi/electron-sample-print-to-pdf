@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <title>main</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
-    <script>
-      window.nodeRequire = require;
-      delete window.require;
-      delete window.exports;
-      delete window.module;
-    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   </head>
   <body>
@@ -28,14 +22,5 @@
         この書生というのは時々我々を捕つかまえて煮にて食うという話である。
       </p>
     </div>
-    <script>
-      var {ipcRenderer} = nodeRequire("electron");
-      var util = nodeRequire("util");
-
-      document.getElementById("btn-print-to-pdf").addEventListener("click", () => {
-        var context = document.getElementById("print-area").innerHTML;
-        ipcRenderer.send("print-to-pdf", context);
-      });
-   </script>
   </body>
 </html>

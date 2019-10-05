@@ -7,7 +7,11 @@ var workerWindow = null;
 
 // シングルページのアプリとしてメインが閉じたら終了とする
 app.once("ready", () => {
-  mainWindow = new BrowserWindow();
+  mainWindow = new BrowserWindow({
+    webPreferences: {
+      preload: path.join(app.getAppPath(), 'main.js')
+    }
+  });
   mainWindow.loadURL("file://" + __dirname + "/main.html");
   mainWindow.openDevTools();
 
@@ -27,7 +31,12 @@ ipcMain.on("print-to-pdf", (event, content) => {
     workerWindow.close();
   }
 
-  workerWindow = new BrowserWindow({ show: false });
+  workerWindow = new BrowserWindow({
+    show: false,
+    webPreferences: {
+      preload: path.join(app.getAppPath(), 'worker.js')
+    }
+  });
   workerWindow.loadURL("file://" + __dirname + "/worker.html");
   workerWindow.openDevTools();
 
@@ -36,7 +45,7 @@ ipcMain.on("print-to-pdf", (event, content) => {
   });
 
   // workerページが準備完了した後に要求を投げるようにする
-  workerWindow.on("ready-to-show", () => {
+  workerWindow.webContents.on("did-finish-load", () => {
     workerWindow.send("print-to-pdf", content);
   });
 });
